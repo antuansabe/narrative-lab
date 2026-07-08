@@ -12,8 +12,8 @@ Pilot: Hola América · First session: **Wednesday, July 22, 2026** · Materials
 |-------|-------------------------------------------|-------------|----------|
 | 0     | Foundation scaffold                       | ✅ done      | `npm run build` passes; `/api/health` returns ok |
 | 1     | Pipeline extraction from CAS              | ✅ done      | Typecheck passes; scratch E2E script scores sample Spanish text using Sonnet client |
-| 2     | Supabase (own project) + schema           | ⬜ pending   | |
-| 3     | Corpus intake (batch)                     | ⬜ pending   | |
+| 2     | Supabase (own project) + schema           | ⬜ pending   | (Deferred by user request, using local mock JSON store) |
+| 3     | Corpus intake (batch)                     | ✅ done      | Local JSON db + intake UI + API endpoints. Runner script scored and stored 6 pieces across 2 contributors. |
 | 4     | Hello World paradigm classifier (§2.1)    | ⬜ pending   | |
 | 5     | Ecosystem view: heat-map + stats (§2.2)   | ⬜ pending   | |
 | 6     | Segmentation + coherence (§2.3)           | ⬜ pending   | |
