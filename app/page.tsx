@@ -14,14 +14,14 @@ const MODULES = [
     title: "Hello World paradigms",
     desc: "Absent / Present / Central classification across the four Hello World paradigms, with a brief grounded justification per piece.",
     phase: "Phase 4",
-    href: null,
+    href: "/ecosystem",
   },
   {
     id: "ecosystem",
     title: "Ecosystem view",
     desc: "One radar for the whole corpus: heat-map overlay, presence statistics, segmentation, and intra-author coherence.",
     phase: "Phases 5–6",
-    href: null,
+    href: "/ecosystem",
   },
 ] as const;
 
@@ -64,19 +64,13 @@ export default function Home() {
                 </p>
                 <h2 className="font-display text-lg text-ink mb-2">{m.title}</h2>
                 <p className="text-sm text-ink/65 leading-relaxed mb-4">{m.desc}</p>
-                {m.href ? (
-                  <span className="text-xs font-mono text-accent group-hover:text-primary transition underline">
-                    Comenzar →
-                  </span>
-                ) : (
-                  <span className="text-xs font-mono text-ink/30 cursor-not-allowed">
-                    Próximamente
-                  </span>
-                )}
+                <span className="text-xs font-mono text-accent group-hover:text-primary transition underline">
+                  Comenzar →
+                </span>
               </>
             );
 
-            return m.href ? (
+            return (
               <Link
                 key={m.id}
                 href={m.href}
@@ -84,10 +78,6 @@ export default function Home() {
               >
                 {ArticleContent}
               </Link>
-            ) : (
-              <article key={m.id} className="bg-paper p-6 opacity-80">
-                {ArticleContent}
-              </article>
             );
           })}
         </div>
