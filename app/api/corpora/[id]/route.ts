@@ -91,6 +91,106 @@ export async function GET(
       };
     }
 
+    // Sender Type Segmentation
+    const senderTypes = ["journalist", "organization", "other"] as const;
+    const senderTypeStats = {} as Record<
+      typeof senderTypes[number],
+      Record<typeof dimKeys[number], number> | null
+    >;
+
+    for (const st of senderTypes) {
+      const matchingContributorIds = contributors.filter((c) => c.senderType === st).map((c) => c.id);
+      const matchingPieces = pieces.filter((p) => matchingContributorIds.includes(p.contributorId));
+      const matchingPieceIds = matchingPieces.map((p) => p.id);
+      const matchingAnalyses = analyses.filter((a) => matchingPieceIds.includes(a.pieceId));
+
+      if (matchingAnalyses.length === 0) {
+        senderTypeStats[st] = null;
+        continue;
+      }
+
+      const stDims = {} as Record<typeof dimKeys[number], number>;
+      for (const d of dimKeys) {
+        const dbScoreKey = d.toLowerCase() as "d1" | "d2" | "d3" | "d4" | "d5";
+        const sum = matchingAnalyses.reduce((acc, val) => acc + val[dbScoreKey], 0);
+        stDims[d] = Math.round((sum / matchingAnalyses.length) * 100) / 100;
+      }
+      senderTypeStats[st] = stDims;
+    }
+
+    // Format Segmentation
+    const formats = ["article", "audiovisual", "social"] as const;
+    const formatStats = {} as Record<
+      typeof formats[number],
+      Record<typeof dimKeys[number], number> | null
+    >;
+
+    for (const f of formats) {
+      const matchingPieces = pieces.filter((p) => p.format === f);
+      const matchingPieceIds = matchingPieces.map((p) => p.id);
+      const matchingAnalyses = analyses.filter((a) => matchingPieceIds.includes(a.pieceId));
+
+      if (matchingAnalyses.length === 0) {
+        formatStats[f] = null;
+        continue;
+      }
+
+      const fDims = {} as Record<typeof dimKeys[number], number>;
+      for (const d of dimKeys) {
+        const dbScoreKey = d.toLowerCase() as "d1" | "d2" | "d3" | "d4" | "d5";
+        const sum = matchingAnalyses.reduce((acc, val) => acc + val[dbScoreKey], 0);
+        fDims[d] = Math.round((sum / matchingAnalyses.length) * 100) / 100;
+      }
+      formatStats[f] = fDims;
+    }
+
+    // Intra-Author Coherence Stats
+    const coherenceStats = contributors.map((contributor) => {
+      const authorPieces = pieces.filter((p) => p.contributorId === contributor.id);
+      const authorPieceIds = authorPieces.map((p) => p.id);
+      const authorAnalyses = analyses.filter((a) => authorPieceIds.includes(a.pieceId));
+
+      const scores = authorAnalyses.map((a) => a.enactmentScore);
+      const K = scores.length;
+
+      if (K <= 1) {
+        return {
+          contributorId: contributor.id,
+          name: contributor.name,
+          senderType: contributor.senderType,
+          piecesCount: K,
+          scores,
+          meanScore: K === 1 ? scores[0] : 0,
+          stdDev: 0,
+          coherenceLevel: "n/a" as const,
+        };
+      }
+
+      const sum = scores.reduce((acc, val) => acc + val, 0);
+      const meanScore = sum / K;
+
+      const squareDiffsSum = scores.reduce((acc, val) => acc + Math.pow(val - meanScore, 2), 0);
+      const stdDev = Math.sqrt(squareDiffsSum / K);
+
+      let coherenceLevel: "alta" | "media" | "divergente" = "alta";
+      if (stdDev > 25) {
+        coherenceLevel = "divergente";
+      } else if (stdDev > 10) {
+        coherenceLevel = "media";
+      }
+
+      return {
+        contributorId: contributor.id,
+        name: contributor.name,
+        senderType: contributor.senderType,
+        piecesCount: K,
+        scores,
+        meanScore: Math.round(meanScore * 10) / 10,
+        stdDev: Math.round(stdDev * 10) / 10,
+        coherenceLevel,
+      };
+    });
+
     // Check version mismatches
     const versionMismatchCount = analyses.filter(
       (a) => a.modelVersion !== MODEL_VERSION || a.schemaVersion !== SCHEMA_VERSION
@@ -109,6 +209,11 @@ export async function GET(
           currentModel: MODEL_VERSION,
           currentSchema: SCHEMA_VERSION,
         },
+        segmentation: {
+          senderType: senderTypeStats,
+          format: formatStats,
+        },
+        coherence: coherenceStats,
       },
       pieces,
       contributors,

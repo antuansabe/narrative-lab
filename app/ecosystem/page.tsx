@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { EcosystemRadar } from "@/components/EcosystemRadar";
+import { SegmentationRadar } from "@/components/SegmentationRadar";
 
 interface Corpus {
   id: string;
@@ -72,6 +73,28 @@ interface EcosystemData {
       currentModel: string;
       currentSchema: string;
     };
+    segmentation: {
+      senderType: {
+        journalist: Record<string, number> | null;
+        organization: Record<string, number> | null;
+        other: Record<string, number> | null;
+      };
+      format: {
+        article: Record<string, number> | null;
+        audiovisual: Record<string, number> | null;
+        social: Record<string, number> | null;
+      };
+    };
+    coherence: Array<{
+      contributorId: string;
+      name: string;
+      senderType: string;
+      piecesCount: number;
+      scores: number[];
+      meanScore: number;
+      stdDev: number;
+      coherenceLevel: "alta" | "media" | "divergente" | "n/a";
+    }>;
   };
   pieces: Piece[];
   contributors: Contributor[];
@@ -105,6 +128,67 @@ export default function EcosystemPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [facilitatorMode, setFacilitatorMode] = useState<boolean>(false);
   const [expandedPieceId, setExpandedPieceId] = useState<string | null>(null);
+  const [segmentCategory, setSegmentCategory] = useState<"senderType" | "format">("senderType");
+
+  const getSenderTypeSeries = () => {
+    if (!data?.stats?.segmentation?.senderType) return [];
+    const st = data.stats.segmentation.senderType;
+    const series = [];
+    if (st.journalist) {
+      series.push({
+        name: "Periodista",
+        scores: st.journalist,
+        color: "#E87722",
+      });
+    }
+    if (st.organization) {
+      series.push({
+        name: "Organización",
+        scores: st.organization,
+        color: "#8B5CF6",
+        strokeDasharray: "5 5",
+      });
+    }
+    if (st.other) {
+      series.push({
+        name: "Otro",
+        scores: st.other,
+        color: "#06B6D4",
+        strokeDasharray: "2 2",
+      });
+    }
+    return series;
+  };
+
+  const getFormatSeries = () => {
+    if (!data?.stats?.segmentation?.format) return [];
+    const f = data.stats.segmentation.format;
+    const series = [];
+    if (f.article) {
+      series.push({
+        name: "Artículo",
+        scores: f.article,
+        color: "#E87722",
+      });
+    }
+    if (f.audiovisual) {
+      series.push({
+        name: "Audiovisual",
+        scores: f.audiovisual,
+        color: "#8B5CF6",
+        strokeDasharray: "5 5",
+      });
+    }
+    if (f.social) {
+      series.push({
+        name: "Social",
+        scores: f.social,
+        color: "#06B6D4",
+        strokeDasharray: "2 2",
+      });
+    }
+    return series;
+  };
 
   // Fetch corpora list
   useEffect(() => {
@@ -321,6 +405,132 @@ export default function EcosystemPage() {
                     <span className="w-2.5 h-2.5 rounded bg-zinc-300"></span>
                     <span className="text-zinc-500">Ausente</span>
                   </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Fila: Segmentación y Comparaciones */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Radar de Segmentación */}
+              <div>
+                <div className="flex items-center justify-between mb-4 bg-zinc-50 border border-zinc-200 rounded-xl p-2 px-3">
+                  <span className="text-xs font-mono uppercase tracking-wider text-zinc-500">
+                    Segmentación
+                  </span>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setSegmentCategory("senderType")}
+                      className={`px-3 py-1 rounded text-xs font-mono font-medium transition ${
+                        segmentCategory === "senderType"
+                          ? "bg-primary text-white"
+                          : "bg-white text-zinc-600 border border-zinc-200 hover:bg-zinc-50"
+                      }`}
+                    >
+                      Remitente
+                    </button>
+                    <button
+                      onClick={() => setSegmentCategory("format")}
+                      className={`px-3 py-1 rounded text-xs font-mono font-medium transition ${
+                        segmentCategory === "format"
+                          ? "bg-primary text-white"
+                          : "bg-white text-zinc-600 border border-zinc-200 hover:bg-zinc-50"
+                      }`}
+                    >
+                      Formato
+                    </button>
+                  </div>
+                </div>
+
+                <SegmentationRadar
+                  title={
+                    segmentCategory === "senderType"
+                      ? "Comparación por Tipo de Remitente"
+                      : "Comparación por Formato de Pieza"
+                  }
+                  subtitle={
+                    segmentCategory === "senderType"
+                      ? "Compara perfiles promedio de Periodistas, Organizaciones y Otros."
+                      : "Compara perfiles promedio de Artículos, Audiovisuales y Redes Sociales."
+                  }
+                  series={
+                    segmentCategory === "senderType"
+                      ? getSenderTypeSeries()
+                      : getFormatSeries()
+                  }
+                />
+              </div>
+
+              {/* Coherencia Intra-Autor */}
+              <div className="border border-zinc-200 bg-white rounded-xl p-6 shadow-sm flex flex-col justify-between">
+                <div>
+                  <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-500 mb-1">
+                    Coherencia Intra-Autor
+                  </h3>
+                  <p className="text-xs text-zinc-400 mb-4">
+                    Mide la variación de los relatos creados por el mismo autor para identificar consistencia o divergencia narrativa.
+                  </p>
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="min-w-full text-xs text-left">
+                    <thead>
+                      <tr className="border-b border-zinc-100 text-zinc-400 uppercase tracking-wider font-mono">
+                        <th className="py-2">Autor</th>
+                        <th className="py-2 text-center">Piezas</th>
+                        <th className="py-2 text-center">Promedio</th>
+                        <th className="py-2 text-center">Desviación (σ)</th>
+                        <th className="py-2 text-right">Coherencia</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-zinc-50 text-zinc-700 font-medium">
+                      {data.stats.coherence.map((author) => {
+                        let badgeClass = "bg-zinc-100 text-zinc-500";
+                        let label = "N/A";
+
+                        if (author.coherenceLevel === "alta") {
+                          badgeClass = "bg-green-100 text-green-800";
+                          label = "Alta";
+                        } else if (author.coherenceLevel === "media") {
+                          badgeClass = "bg-amber-100 text-amber-800";
+                          label = "Media";
+                        } else if (author.coherenceLevel === "divergente") {
+                          badgeClass = "bg-red-100 text-red-800 animate-pulse";
+                          label = "Divergente";
+                        } else {
+                          label = "N/A";
+                        }
+
+                        return (
+                          <tr key={author.contributorId} className="hover:bg-zinc-50/30">
+                            <td className="py-2.5 max-w-[120px] truncate" title={author.name}>
+                              {author.name}
+                            </td>
+                            <td className="py-2.5 text-center font-mono">{author.piecesCount}</td>
+                            <td className="py-2.5 text-center font-mono">{author.meanScore}</td>
+                            <td className="py-2.5 text-center font-mono">
+                              {author.piecesCount > 1 ? author.stdDev : "-"}
+                            </td>
+                            <td className="py-2.5 text-right">
+                              <span className={`px-2 py-0.5 rounded-full font-bold text-[9px] uppercase ${badgeClass}`}>
+                                {label}
+                              </span>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                      {data.stats.coherence.length === 0 && (
+                        <tr>
+                          <td colSpan={5} className="py-4 text-center text-zinc-400 italic">
+                            No se encontraron colaboradores registrados.
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-zinc-100 text-[10px] text-zinc-400 leading-normal">
+                  💡 <strong>Divergente (σ &gt; 25)</strong>: Indica un "outlier narrativo" que emplea marcos de cambio sistémico en una pieza pero cae en marcos puramente asistenciales en otra.
                 </div>
               </div>
             </div>
