@@ -238,7 +238,7 @@ export default function EcosystemPage() {
 
   return (
     <main className="min-h-screen bg-paper pb-24 text-ink">
-      <header className="border-b border-line">
+      <header className="border-b border-line print:hidden">
         <div className="mx-auto max-w-4xl px-6 py-5 flex items-baseline justify-between">
           <Link href="/" className="font-display text-xl text-primary hover:opacity-80 transition">
             Narrative Lab
@@ -251,7 +251,7 @@ export default function EcosystemPage() {
 
       <div className="mx-auto max-w-4xl px-6 py-8">
         {/* Selector de Corpus */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 bg-zinc-50 border border-zinc-200 rounded-xl p-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 bg-zinc-50 border border-zinc-200 rounded-xl p-4 print:hidden">
           <div>
             <label className="block text-xs font-mono uppercase tracking-wider text-zinc-500 mb-1">
               Seleccionar Corpus
@@ -272,7 +272,14 @@ export default function EcosystemPage() {
               <p className="text-sm text-zinc-500">No se encontraron corpora. Ingresa piezas en Corpus Intake primero.</p>
             )}
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => window.print()}
+              className="px-3 py-1.5 bg-white border border-zinc-300 hover:bg-zinc-50 text-zinc-700 text-xs font-mono font-medium rounded shadow-sm flex items-center gap-1.5"
+              title="Guardar como PDF o Imprimir reporte"
+            >
+              <span>🖨️</span> Imprimir Reporte
+            </button>
             <label className="flex items-center gap-2 text-xs font-mono text-zinc-600 cursor-pointer select-none">
               <input
                 type="checkbox"

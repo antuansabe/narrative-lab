@@ -17,7 +17,7 @@ Pilot: Hola América · First session: **Wednesday, July 22, 2026** · Materials
 | 4     | Hello World paradigm classifier (§2.1)    | ✅ done      | Verbatim Anexo A prompts + classifier runner + db classifications. Script processed 6 database pieces; test script verified migrant text. |
 | 5     | Ecosystem view: heat-map + stats (§2.2)   | ✅ done      | Dynamic API endpoint (mean/SD stats) + Recharts layered radar rendering for SD ribbon glow + paradigm stacked bars + facilitator toggle. |
 | 6     | Segmentation + coherence (§2.3)           | ✅ done      | Sub-graph averages (senderType & format) + SegmentationRadar multi-series overlaid chart + intra-author coherence calculations (standard deviation classification) with outlier detection. |
-| 7     | Session materials + copy pass             | ⬜ pending   | |
+| 7     | Session materials + copy pass             | ✅ done      | Print-friendly layout (CSS media queries) + print button + conversation scaffolds in docs/SESSION_SCAFFOLDS.md + Spanish terminology validation. |
 | 8     | Vercel deploy + E2E smoke                 | ⬜ pending   | |
 
 Hard sequencing: Phases 1–5 MUST land before materials arrive (~July 13–15).
