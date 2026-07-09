@@ -181,5 +181,223 @@
       "modelVersion": "claude-sonnet-4-6",
       "createdAt": "2026-07-08T00:44:59.583Z"
     }
+  ],
+  "paradigmClassifications": [
+    {
+      "id": "625ab680-8bff-483f-90bd-3f83e898dc18",
+      "pieceId": "da274a1a-1a66-46dc-92b0-c4f4256f8311",
+      "paradigm": "paradigm1",
+      "level": "absent",
+      "justification": "El texto no aborda la migración ni la movilidad humana. Las 'asambleas vecinales', los 'jóvenes de quince y dieciséis años' y las 'organizaciones vecinales' mencionados son comunidades locales de Iztapalapa, no personas en movimiento, migrantes, refugiados ni desplazados.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:40:34.606Z"
+    },
+    {
+      "id": "47683d7d-3e1d-4c1b-bd4e-526de7831aac",
+      "pieceId": "da274a1a-1a66-46dc-92b0-c4f4256f8311",
+      "paradigm": "paradigm2",
+      "level": "absent",
+      "justification": "El texto no menciona en ningún momento el fenómeno migratorio, el refugio ni el desplazamiento forzado, por lo que no es posible evaluar si la migración se enmarca como experiencia compartida.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:40:34.607Z"
+    },
+    {
+      "id": "51e37a0c-e572-416e-9517-ba8648a5ec22",
+      "pieceId": "da274a1a-1a66-46dc-92b0-c4f4256f8311",
+      "paradigm": "paradigm3",
+      "level": "absent",
+      "justification": "El texto no hace referencia a personas en movimiento ni a saberes migrantes; los conocimientos y propuestas descritos provienen de asambleas vecinales y jóvenes locales de Iztapalapa, sin vínculo con la movilidad humana.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:40:34.607Z"
+    },
+    {
+      "id": "2619c644-fc2e-4044-bbbf-a86f842db93b",
+      "pieceId": "da274a1a-1a66-46dc-92b0-c4f4256f8311",
+      "paradigm": "paradigm4",
+      "level": "absent",
+      "justification": "El texto no aborda identidades de personas en movimiento ni comunidades de diáspora; al no tratar la migración ni el desplazamiento, este paradigma no es aplicable.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:40:34.608Z"
+    },
+    {
+      "id": "66c9a12b-a31a-4d1b-89e6-0a90aa2c8c27",
+      "pieceId": "2ca53195-7b36-4ca2-ae70-c28c8cf6e41f",
+      "paradigm": "paradigm1",
+      "level": "absent",
+      "justification": "El texto no aborda la migración ni la movilidad humana en ningún momento; trata sobre transformación educativa, métricas de aprendizaje y política pública escolar. Por la Regla de Exclusión Crítica, el nivel es 'absent'.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:40:41.167Z"
+    },
+    {
+      "id": "2a3df40e-c197-4714-82f3-0eba91cf113f",
+      "pieceId": "2ca53195-7b36-4ca2-ae70-c28c8cf6e41f",
+      "paradigm": "paradigm2",
+      "level": "absent",
+      "justification": "El texto no menciona personas en movimiento, migrantes, refugiados ni desplazados. Al no abordar la movilidad humana, el paradigma debe clasificarse obligatoriamente como 'absent'.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:40:41.168Z"
+    },
+    {
+      "id": "2b52687a-c254-4fa9-a953-ebd3f755cfb9",
+      "pieceId": "2ca53195-7b36-4ca2-ae70-c28c8cf6e41f",
+      "paradigm": "paradigm3",
+      "level": "absent",
+      "justification": "No existe referencia alguna a personas en movimiento ni a sus saberes o contribuciones; el texto se centra en métricas educativas y agencia juvenil en contextos escolares locales. Nivel 'absent' por la Regla de Exclusión Crítica.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:40:41.168Z"
+    },
+    {
+      "id": "09d173d8-7247-49db-a560-cba24108f7c5",
+      "pieceId": "2ca53195-7b36-4ca2-ae70-c28c8cf6e41f",
+      "paradigm": "paradigm4",
+      "level": "absent",
+      "justification": "El texto no identifica a ningún grupo como migrante, refugiado o persona en movilidad; los 'adolescentes' y 'maestras' mencionados no están caracterizados bajo ninguna categoría de movilidad humana. Nivel 'absent' obligatorio.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:40:41.169Z"
+    },
+    {
+      "id": "8e3785b5-4636-475c-9704-e98545792d4c",
+      "pieceId": "ad26a745-7898-4bbf-bec3-137a619a7b59",
+      "paradigm": "paradigm1",
+      "level": "absent",
+      "justification": "El texto no aborda la migración ni la movilidad humana; se enfoca en 'niños y niñas en situación de vulnerabilidad' y 'familias' en contexto de pobreza general, sin ninguna referencia a migrantes, refugiados o personas en movimiento.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:40:47.453Z"
+    },
+    {
+      "id": "05d8b58b-77ad-4249-8643-66d3f7140aeb",
+      "pieceId": "ad26a745-7898-4bbf-bec3-137a619a7b59",
+      "paradigm": "paradigm2",
+      "level": "absent",
+      "justification": "El texto no menciona el fenómeno migratorio ni establece ningún vínculo con personas en movimiento, desplazamiento forzado o movilidad humana, por lo que el paradigma no aplica.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:40:47.454Z"
+    },
+    {
+      "id": "188edef8-2dcc-404c-b743-44302b9431a1",
+      "pieceId": "ad26a745-7898-4bbf-bec3-137a619a7b59",
+      "paradigm": "paradigm3",
+      "level": "absent",
+      "justification": "El texto no hace referencia a personas en movimiento, migrantes o refugiados, ni a saberes o aportes derivados de experiencias migratorias; el contenido se circunscribe a programas de asistencia social para población infantil en pobreza.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:40:47.455Z"
+    },
+    {
+      "id": "b64e62d2-c4f7-41ba-b49e-c6a1a09c84d7",
+      "pieceId": "ad26a745-7898-4bbf-bec3-137a619a7b59",
+      "paradigm": "paradigm4",
+      "level": "absent",
+      "justification": "El texto no aborda identidades migrantes, comunidades de diáspora ni movilidad humana en ninguna de sus formas; los sujetos descritos son 'niños y niñas en situación de vulnerabilidad' sin ninguna caracterización migratoria.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:40:47.455Z"
+    },
+    {
+      "id": "fc771486-f91b-4ff3-a65a-9842b416924a",
+      "pieceId": "f54037c2-2e65-436d-96cc-03011c907230",
+      "paradigm": "paradigm1",
+      "level": "absent",
+      "justification": "El texto no aborda la migración ni la movilidad humana en ningún momento. Las 'comunidades más vulnerables' y los 'agentes de cambio' mencionados no son identificados como migrantes, refugiados ni personas en movimiento.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:40:54.002Z"
+    },
+    {
+      "id": "ef11e7b4-9b5c-4515-bfa0-1e02ca8a1bcf",
+      "pieceId": "f54037c2-2e65-436d-96cc-03011c907230",
+      "paradigm": "paradigm2",
+      "level": "absent",
+      "justification": "El texto no hace referencia alguna al fenómeno migratorio, al desplazamiento forzado ni a la movilidad humana, por lo que este paradigma no es aplicable.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:40:54.003Z"
+    },
+    {
+      "id": "b64fae06-603d-4d6a-995a-1de348ddb90a",
+      "pieceId": "f54037c2-2e65-436d-96cc-03011c907230",
+      "paradigm": "paradigm3",
+      "level": "absent",
+      "justification": "El texto no menciona personas en movimiento, migrantes ni refugiados, ni reconoce saberes o aportes vinculados a la experiencia migratoria. El paradigma no es aplicable.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:40:54.005Z"
+    },
+    {
+      "id": "3ee253ef-ef1d-4846-9673-5a7958dd8edf",
+      "pieceId": "f54037c2-2e65-436d-96cc-03011c907230",
+      "paradigm": "paradigm4",
+      "level": "absent",
+      "justification": "El texto no aborda identidades migrantes ni comunidades en movilidad. Los 'líderes visionarios' y la 'próxima generación de agentes de cambio' no son identificados como personas en situación de movilidad humana.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:40:54.006Z"
+    },
+    {
+      "id": "0d68410d-6117-402d-ae6e-852537f4f8b7",
+      "pieceId": "d8aaecd6-f6b3-40d9-978f-9675b1a99850",
+      "paradigm": "paradigm1",
+      "level": "absent",
+      "justification": "El texto no aborda la migración ni la movilidad humana. Las 'asambleas vecinales', los 'jóvenes de quince y dieciséis años' y las 'organizaciones vecinales' mencionados no son identificados como migrantes, refugiados ni personas en movimiento.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:41:00.958Z"
+    },
+    {
+      "id": "61fabbf0-61e0-4e57-a193-c9d3076a7bcf",
+      "pieceId": "d8aaecd6-f6b3-40d9-978f-9675b1a99850",
+      "paradigm": "paradigm2",
+      "level": "absent",
+      "justification": "El texto no menciona el fenómeno migratorio ni a personas en situación de movilidad humana, por lo que no es posible evaluar si la migración se enmarca como experiencia compartida.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:41:00.959Z"
+    },
+    {
+      "id": "e2b6eaa3-d280-4257-9c99-f62e3b93b04b",
+      "pieceId": "d8aaecd6-f6b3-40d9-978f-9675b1a99850",
+      "paradigm": "paradigm3",
+      "level": "absent",
+      "justification": "El texto no hace referencia a personas en movimiento, migrantes o refugiados, ni a saberes o aportes derivados de experiencias migratorias. Los actores descritos son comunidades vecinales locales.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:41:00.959Z"
+    },
+    {
+      "id": "8cabfff7-07c1-4e30-a6cd-0663c649c9d1",
+      "pieceId": "d8aaecd6-f6b3-40d9-978f-9675b1a99850",
+      "paradigm": "paradigm4",
+      "level": "absent",
+      "justification": "El texto no aborda identidades migrantes ni poblaciones en movilidad. Los grupos mencionados —'asambleas vecinales' e 'jóvenes'— no son caracterizados como migrantes, desplazados ni personas en movimiento.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:41:00.960Z"
+    },
+    {
+      "id": "ae6d8b8e-b1ed-4f7d-a902-7563527958f7",
+      "pieceId": "a40b2089-e6dc-44fb-82cf-ff17f1807224",
+      "paradigm": "paradigm1",
+      "level": "absent",
+      "justification": "El texto no aborda la migración ni la movilidad humana en ningún momento; trata sobre transformación educativa, métricas de aprendizaje y política pública escolar. Por la Regla de Exclusión Crítica, el paradigma se clasifica como ausente.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:41:07.223Z"
+    },
+    {
+      "id": "c2c3b277-05ce-4329-bc78-827456164a4b",
+      "pieceId": "a40b2089-e6dc-44fb-82cf-ff17f1807224",
+      "paradigm": "paradigm2",
+      "level": "absent",
+      "justification": "El texto no menciona personas en movimiento, migrantes, refugiados ni desplazados. Al no abordar la movilidad humana, el paradigma se clasifica obligatoriamente como ausente.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:41:07.224Z"
+    },
+    {
+      "id": "008b8dfb-e103-464b-a10e-4a3e71353cd7",
+      "pieceId": "a40b2089-e6dc-44fb-82cf-ff17f1807224",
+      "paradigm": "paradigm3",
+      "level": "absent",
+      "justification": "No existe referencia alguna a personas en movimiento ni a sus saberes o contribuciones. El texto se centra en saberes docentes y juveniles en contextos educativos locales, sin vínculo con la movilidad humana.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:41:07.225Z"
+    },
+    {
+      "id": "4a520740-0490-4445-9204-25efa2460c71",
+      "pieceId": "a40b2089-e6dc-44fb-82cf-ff17f1807224",
+      "paradigm": "paradigm4",
+      "level": "absent",
+      "justification": "El texto no trata identidades migrantes ni comunidades en movilidad. Los 'adolescentes' y 'maestras' mencionados no son identificados como migrantes, refugiados ni personas en desplazamiento, por lo que el paradigma se clasifica como ausente.",
+      "modelVersion": "claude-sonnet-4-6",
+      "createdAt": "2026-07-09T01:41:07.225Z"
+    }
   ]
 }

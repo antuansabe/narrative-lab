@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
-import { createContributor, createPiece, createAnalysis } from "@/lib/db/mockStore";
+import { createContributor, createPiece, createAnalysis, createParadigmClassification } from "@/lib/db/mockStore";
 import { callClaudeWithCachedSystem } from "@/lib/anthropic";
 import { SCORER_SYSTEM_PROMPT } from "@/lib/prompts/scorer";
 import { validateAndComputeScore } from "@/lib/scoring";
+import { runClassification } from "@/lib/classifier";
 import { countWords } from "@/lib/text";
 import { MODEL_VERSION, SCHEMA_VERSION } from "@/lib/version";
 import type { GenreTag } from "@/lib/types";
@@ -122,10 +123,23 @@ export async function POST(request: Request) {
         MODEL_VERSION
       );
 
+      // Run Hello World paradigm classification
+      let classifications = null;
+      try {
+        classifications = await runClassification(p.text);
+        createParadigmClassification(savedPiece.id, "paradigm1", classifications.paradigm1.level, classifications.paradigm1.justification, MODEL_VERSION);
+        createParadigmClassification(savedPiece.id, "paradigm2", classifications.paradigm2.level, classifications.paradigm2.justification, MODEL_VERSION);
+        createParadigmClassification(savedPiece.id, "paradigm3", classifications.paradigm3.level, classifications.paradigm3.justification, MODEL_VERSION);
+        createParadigmClassification(savedPiece.id, "paradigm4", classifications.paradigm4.level, classifications.paradigm4.justification, MODEL_VERSION);
+      } catch (err: any) {
+        console.error(`[api/intake] Hello World classification failed for piece "${p.title}":`, err);
+      }
+
       results.push({
         piece: savedPiece,
         analysis: savedAnalysis,
-        scoreResult: scoringResult
+        scoreResult: scoringResult,
+        classifications
       });
     }
 

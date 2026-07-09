@@ -51,11 +51,22 @@ export interface Analysis {
   createdAt: string;
 }
 
+export interface ParadigmClassification {
+  id: string;
+  pieceId: string;
+  paradigm: "paradigm1" | "paradigm2" | "paradigm3" | "paradigm4";
+  level: "absent" | "present" | "central";
+  justification: string;
+  modelVersion: string;
+  createdAt: string;
+}
+
 export interface DbSchema {
   corpora: Corpus[];
   contributors: Contributor[];
   pieces: Piece[];
   analyses: Analysis[];
+  paradigmClassifications: ParadigmClassification[];
 }
 
 function initDb(): DbSchema {
@@ -69,13 +80,18 @@ function initDb(): DbSchema {
       contributors: [],
       pieces: [],
       analyses: [],
+      paradigmClassifications: [],
     };
     fs.writeFileSync(DB_PATH, JSON.stringify(defaultData, null, 2), "utf-8");
     return defaultData;
   }
   try {
     const contents = fs.readFileSync(DB_PATH, "utf-8");
-    return JSON.parse(contents);
+    const parsed = JSON.parse(contents);
+    if (!parsed.paradigmClassifications) {
+      parsed.paradigmClassifications = [];
+    }
+    return parsed;
   } catch (err) {
     console.error("Error reading database file, resetting:", err);
     const defaultData: DbSchema = {
@@ -83,6 +99,7 @@ function initDb(): DbSchema {
       contributors: [],
       pieces: [],
       analyses: [],
+      paradigmClassifications: [],
     };
     fs.writeFileSync(DB_PATH, JSON.stringify(defaultData, null, 2), "utf-8");
     return defaultData;
@@ -228,3 +245,45 @@ export function createAnalysis(
   writeDb(db);
   return newAnalysis;
 }
+
+// --- Paradigm Classification API ---
+export function getParadigmClassifications(pieceId?: string): ParadigmClassification[] {
+  const db = readDb();
+  if (pieceId) {
+    return db.paradigmClassifications.filter((pc) => pc.pieceId === pieceId);
+  }
+  return db.paradigmClassifications;
+}
+
+export function createParadigmClassification(
+  pieceId: string,
+  paradigm: "paradigm1" | "paradigm2" | "paradigm3" | "paradigm4",
+  level: "absent" | "present" | "central",
+  justification: string,
+  modelVersion: string
+): ParadigmClassification {
+  const db = readDb();
+  const piece = db.pieces.find((p) => p.id === pieceId);
+  if (!piece) {
+    throw new Error(`Piece with ID ${pieceId} not found.`);
+  }
+
+  // Ensure unique classification per (piece, paradigm, modelVersion)
+  db.paradigmClassifications = db.paradigmClassifications.filter(
+    (pc) => !(pc.pieceId === pieceId && pc.paradigm === paradigm && pc.modelVersion === modelVersion)
+  );
+
+  const newPC: ParadigmClassification = {
+    id: crypto.randomUUID(),
+    pieceId,
+    paradigm,
+    level,
+    justification: justification.trim(),
+    modelVersion,
+    createdAt: new Date().toISOString(),
+  };
+  db.paradigmClassifications.push(newPC);
+  writeDb(db);
+  return newPC;
+}
+
