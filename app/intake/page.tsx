@@ -198,6 +198,10 @@ export default function IntakePage() {
         </div>
       </header>
 
+      <div className="bg-amber-50 border-b border-amber-200 text-amber-800 py-2.5 px-6 text-center text-xs font-mono">
+        ⚠️ This local build has no database yet — nothing entered here is saved permanently.
+      </div>
+
       <section className="mx-auto max-w-4xl px-6 pt-12">
         <div className="mb-10">
           <h1 className="font-display text-4xl text-ink">Ingreso de Corpus (Lote)</h1>

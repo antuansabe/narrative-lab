@@ -83,8 +83,13 @@ export function EcosystemRadar({ dimensions }: EcosystemRadarProps) {
             Muestra el promedio de la comunidad de narradores y el rango de variación (desviación estándar).
           </p>
         </div>
-        <div className={`px-3 py-1 rounded-full border text-xs font-mono font-medium self-start ${glowClass}`}>
-          {glowLabel} (avg SD: {avgStdDev.toFixed(2)})
+        <div className="flex flex-col items-end gap-1.5 self-start">
+          <div className={`px-3 py-1 rounded-full border text-xs font-mono font-medium ${glowClass}`}>
+            {glowLabel} (avg SD: {avgStdDev.toFixed(2)})
+          </div>
+          <span className="text-[9px] font-mono uppercase tracking-wider text-amber-600 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded">
+            provisional — awaiting Giselle / provisional — pendiente de Giselle
+          </span>
         </div>
       </div>
 

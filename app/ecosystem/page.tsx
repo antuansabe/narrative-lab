@@ -470,9 +470,14 @@ export default function EcosystemPage() {
               {/* Coherencia Intra-Autor */}
               <div className="border border-zinc-200 bg-white rounded-xl p-6 shadow-sm flex flex-col justify-between">
                 <div>
-                  <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-500 mb-1">
-                    Coherencia Intra-Autor
-                  </h3>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-1">
+                    <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-500">
+                      Coherencia Intra-Autor
+                    </h3>
+                    <span className="text-[9px] font-mono uppercase tracking-wider text-amber-600 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded self-start">
+                      provisional — awaiting Giselle / provisional — pendiente de Giselle
+                    </span>
+                  </div>
                   <p className="text-xs text-zinc-400 mb-4">
                     Mide la variación de los relatos creados por el mismo autor para identificar consistencia o divergencia narrativa.
                   </p>

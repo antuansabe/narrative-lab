@@ -80,7 +80,7 @@ async function main() {
 
   try {
     // 1. Create a Corpus
-    const corpusName = "Hola América Pilot 2026-07";
+    const corpusName = "DEMO — Hola América (synthetic test data)";
     const corpus = createCorpus(corpusName);
     console.log(`Created Corpus: "${corpusName}" | ID: ${corpus.id}`);
 
