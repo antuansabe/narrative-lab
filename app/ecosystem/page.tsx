@@ -306,6 +306,16 @@ export default function EcosystemPage() {
 
         {!loading && data && (
           <div className="space-y-8">
+            {/* Encabezado de reporte — solo visible al imprimir, para que el PDF se identifique a sí mismo */}
+            <div className="hidden print:block mb-6">
+              <h1 className="font-display text-2xl text-ink">Narrative Lab — Reporte de Ecosistema</h1>
+              <p className="text-sm text-zinc-600 mt-1">
+                Corpus: <strong>{data.corpus.name}</strong> · Generado el{" "}
+                {new Date().toLocaleDateString("es-MX", { year: "numeric", month: "long", day: "numeric" })}
+                {facilitatorMode ? " · Incluye desglose por pieza (Modo Facilitador)" : ""}
+              </p>
+            </div>
+
             {/* Tarjetas de Resumen */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div className="bg-white border border-zinc-200 rounded-xl p-4">
