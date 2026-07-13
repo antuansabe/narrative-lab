@@ -321,7 +321,7 @@ export default function EcosystemPage() {
                 <span className="text-3xl font-display text-zinc-800">{data.contributorsCount}</span>
               </div>
               <div className="bg-white border border-zinc-200 rounded-xl p-4">
-                <span className="block text-xs font-mono uppercase tracking-wider text-zinc-400">Mismatches</span>
+                <span className="block text-xs font-mono uppercase tracking-wider text-zinc-400">Discrepancias</span>
                 <span className={`text-3xl font-display ${data.stats.versionMismatch.count > 0 ? "text-amber-500" : "text-zinc-800"}`}>
                   {data.stats.versionMismatch.count}
                 </span>
@@ -475,7 +475,7 @@ export default function EcosystemPage() {
                       Coherencia Intra-Autor
                     </h3>
                     <span className="text-[9px] font-mono uppercase tracking-wider text-amber-600 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded self-start">
-                      provisional — awaiting Giselle / provisional — pendiente de Giselle
+                      provisional — pendiente de validación de Giselle
                     </span>
                   </div>
                   <p className="text-xs text-zinc-400 mb-4">

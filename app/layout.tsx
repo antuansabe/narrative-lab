@@ -25,7 +25,7 @@ const plexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: "Narrative Lab",
   description:
-    "Corpus-level narrative analysis. A mirror for how an ecosystem writes about people on the move — not a monitor.",
+    "Análisis narrativo a nivel de corpus. Un espejo de cómo un ecosistema escribe sobre las personas en movilidad — no un monitor.",
 };
 
 export default function RootLayout({

@@ -4,23 +4,23 @@ import { APP_PHASE, MODEL_VERSION, SCHEMA_VERSION } from "@/lib/version";
 const MODULES = [
   {
     id: "corpus",
-    title: "Corpus intake",
-    desc: "Batch entry of narrative pieces — articles, scripts, transcripts — with sender type and format metadata.",
-    phase: "Phase 3",
+    title: "Ingreso de corpus",
+    desc: "Captura en lote de piezas narrativas — artículos, guiones, transcripciones — con metadatos de tipo de emisor y formato.",
+    phase: "Fase 3",
     href: "/intake",
   },
   {
     id: "paradigms",
-    title: "Hello World paradigms",
-    desc: "Absent / Present / Central classification across the four Hello World paradigms, with a brief grounded justification per piece.",
-    phase: "Phase 4",
+    title: "Paradigmas Hello World",
+    desc: "Clasificación Ausente / Presente / Central en los cuatro paradigmas de Hello World, con una justificación breve y fundamentada por pieza.",
+    phase: "Fase 4",
     href: "/ecosystem",
   },
   {
     id: "ecosystem",
-    title: "Ecosystem view",
-    desc: "One radar for the whole corpus: heat-map overlay, presence statistics, segmentation, and intra-author coherence.",
-    phase: "Phases 5–6",
+    title: "Vista de ecosistema",
+    desc: "Un radar para todo el corpus: superposición de mapa de calor, estadísticas de presencia, segmentación, y coherencia intra-autor.",
+    phase: "Fases 5–6",
     href: "/ecosystem",
   },
 ] as const;
@@ -44,13 +44,13 @@ export default function Home() {
           Ashoka · Hello World · Hola América
         </p>
         <h1 className="font-display text-5xl leading-tight text-ink max-w-2xl">
-          A mirror for how an ecosystem tells its stories.
+          Un espejo de cómo un ecosistema cuenta sus historias.
         </h1>
         <p className="mt-6 max-w-xl text-ink/70 leading-relaxed">
-          Narrative Lab reads a corpus — not a person. It maps where a
-          community of storytellers concentrates, where it disperses, and
-          which paradigms of Hello World are present, absent, or central
-          across the whole body of work.
+          Narrative Lab lee un corpus — no a una persona. Mapea dónde se
+          concentra una comunidad de narradores, dónde se dispersa, y
+          qué paradigmas de Hello World están presentes, ausentes o
+          centrales a lo largo de todo el conjunto de textos.
         </p>
       </section>
 
@@ -86,7 +86,7 @@ export default function Home() {
       <footer className="border-t border-line">
         <div className="mx-auto max-w-4xl px-6 py-5 flex items-center justify-between font-mono text-[11px] text-ink/40">
           <span>
-            model {MODEL_VERSION} · schema {SCHEMA_VERSION}
+            modelo {MODEL_VERSION} · esquema {SCHEMA_VERSION}
           </span>
           <a href="/api/health" className="hover:text-primary">
             /api/health

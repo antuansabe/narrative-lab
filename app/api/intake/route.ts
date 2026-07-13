@@ -27,31 +27,31 @@ export async function POST(request: Request) {
 
     // --- Validation ---
     if (!corpusId || typeof corpusId !== "string") {
-      return NextResponse.json({ error: "Missing or invalid corpusId." }, { status: 400 });
+      return NextResponse.json({ error: "Falta el ID del corpus o no es válido." }, { status: 400 });
     }
     if (!contributorName || typeof contributorName !== "string" || contributorName.trim() === "") {
-      return NextResponse.json({ error: "Missing or invalid contributorName." }, { status: 400 });
+      return NextResponse.json({ error: "Falta el nombre del colaborador o no es válido." }, { status: 400 });
     }
     if (!senderType || !VALID_SENDER_TYPES.includes(senderType)) {
-      return NextResponse.json({ error: `Invalid senderType. Must be one of: ${VALID_SENDER_TYPES.join(", ")}` }, { status: 400 });
+      return NextResponse.json({ error: `Tipo de emisor no válido. Debe ser uno de: ${VALID_SENDER_TYPES.join(", ")}` }, { status: 400 });
     }
     if (!pieces || !Array.isArray(pieces) || pieces.length === 0 || pieces.length > 3) {
-      return NextResponse.json({ error: "Pieces must be an array of 1 to 3 items." }, { status: 400 });
+      return NextResponse.json({ error: "Las piezas deben ser una lista de 1 a 3 elementos." }, { status: 400 });
     }
 
     for (let i = 0; i < pieces.length; i++) {
       const p = pieces[i];
       if (!p.title || typeof p.title !== "string" || p.title.trim() === "") {
-        return NextResponse.json({ error: `Piece ${i + 1} has an invalid title.` }, { status: 400 });
+        return NextResponse.json({ error: `La pieza ${i + 1} tiene un título no válido.` }, { status: 400 });
       }
       if (!p.text || typeof p.text !== "string" || countWords(p.text) < 50) {
-        return NextResponse.json({ error: `Piece ${i + 1} text is too short. Minimum 50 words.` }, { status: 400 });
+        return NextResponse.json({ error: `El texto de la pieza ${i + 1} es demasiado corto. Mínimo 50 palabras.` }, { status: 400 });
       }
       if (!p.genreTag || !VALID_GENRE_TAGS.includes(p.genreTag as GenreTag)) {
-        return NextResponse.json({ error: `Piece ${i + 1} has an invalid genreTag.` }, { status: 400 });
+        return NextResponse.json({ error: `La pieza ${i + 1} tiene un género no válido.` }, { status: 400 });
       }
       if (!p.format || !VALID_FORMATS.includes(p.format)) {
-        return NextResponse.json({ error: `Piece ${i + 1} has an invalid format.` }, { status: 400 });
+        return NextResponse.json({ error: `La pieza ${i + 1} tiene un formato no válido.` }, { status: 400 });
       }
     }
 
@@ -79,7 +79,7 @@ export async function POST(request: Request) {
       } catch (err: any) {
         console.error(`[api/intake] Error scoring piece "${p.title}":`, err);
         errorOccurred = true;
-        errorMessage = err.message || "Failed to contact Claude scoring service.";
+        errorMessage = err.message || "No se pudo contactar el servicio de calificación de Claude.";
       }
 
       if (!errorOccurred) {
@@ -88,14 +88,14 @@ export async function POST(request: Request) {
           scoringResult = validation.result;
         } else {
           errorOccurred = true;
-          errorMessage = validation.detail || "Claude returned a malformed scoring structure.";
+          errorMessage = validation.detail || "Claude devolvió una estructura de calificación mal formada.";
         }
       }
 
       // Save the piece record regardless (or if we failed, we flag it. Let's save if successful, or we can abort. Let's fail the intake transaction if scoring fails so the user can correct the input or retry.)
       if (errorOccurred) {
         return NextResponse.json({
-          error: `Failed to score piece "${p.title}": ${errorMessage}`
+          error: `No se pudo calificar la pieza "${p.title}": ${errorMessage}`
         }, { status: 502 });
       }
 
@@ -150,6 +150,6 @@ export async function POST(request: Request) {
     }, { status: 201 });
   } catch (err: any) {
     console.error("[api/intake] Batch intake error:", err);
-    return NextResponse.json({ error: err.message || "An unexpected error occurred during batch intake." }, { status: 500 });
+    return NextResponse.json({ error: err.message || "Ocurrió un error inesperado durante el ingreso en lote." }, { status: 500 });
   }
 }

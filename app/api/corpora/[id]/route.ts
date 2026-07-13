@@ -13,7 +13,7 @@ export async function GET(
     // Find corpus
     const corpus = db.corpora.find((c) => c.id === corpusId);
     if (!corpus) {
-      return NextResponse.json({ error: `Corpus with ID ${corpusId} not found.` }, { status: 404 });
+      return NextResponse.json({ error: `No se encontró el corpus con ID ${corpusId}.` }, { status: 404 });
     }
 
     // Filter data belonging to this corpus
@@ -222,6 +222,6 @@ export async function GET(
     }, { status: 200 });
   } catch (err: any) {
     console.error(`[api/corpora/[id]] GET error:`, err);
-    return NextResponse.json({ error: err.message || "Failed to retrieve corpus details." }, { status: 500 });
+    return NextResponse.json({ error: err.message || "No se pudieron obtener los detalles del corpus." }, { status: 500 });
   }
 }

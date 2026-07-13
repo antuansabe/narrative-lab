@@ -7,7 +7,7 @@ export async function GET() {
     return NextResponse.json({ corpora }, { status: 200 });
   } catch (err: any) {
     console.error("[api/corpora] GET error:", err);
-    return NextResponse.json({ error: "Failed to retrieve corpora." }, { status: 500 });
+    return NextResponse.json({ error: "No se pudieron obtener los corpus." }, { status: 500 });
   }
 }
 
@@ -16,12 +16,12 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { name } = body;
     if (!name || typeof name !== "string" || name.trim() === "") {
-      return NextResponse.json({ error: "Missing or invalid corpus name." }, { status: 400 });
+      return NextResponse.json({ error: "Falta el nombre del corpus o no es válido." }, { status: 400 });
     }
     const corpus = createCorpus(name);
     return NextResponse.json({ corpus }, { status: 201 });
   } catch (err: any) {
     console.error("[api/corpora] POST error:", err);
-    return NextResponse.json({ error: "Failed to create corpus." }, { status: 500 });
+    return NextResponse.json({ error: "No se pudo crear el corpus." }, { status: 500 });
   }
 }

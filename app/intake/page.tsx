@@ -199,14 +199,14 @@ export default function IntakePage() {
       </header>
 
       <div className="bg-amber-50 border-b border-amber-200 text-amber-800 py-2.5 px-6 text-center text-xs font-mono">
-        ⚠️ This local build has no database yet — nothing entered here is saved permanently.
+        ⚠️ Esta versión local todavía no tiene base de datos — nada de lo que se ingrese aquí se guarda de forma permanente.
       </div>
 
       <section className="mx-auto max-w-4xl px-6 pt-12">
         <div className="mb-10">
           <h1 className="font-display text-4xl text-ink">Ingreso de Corpus (Lote)</h1>
           <p className="mt-2 text-ink/75 max-w-2xl text-sm leading-relaxed">
-            Registra un nuevo colaborador y paste hasta tres piezas narrativas (artículos, transcripciones, posts) asociadas. El pipeline evaluará cada una con la matriz Ashoka de 5 dimensiones.
+            Registra un nuevo colaborador y pega hasta tres piezas narrativas (artículos, transcripciones, posts) asociadas. El pipeline evaluará cada una con la matriz Ashoka de 5 dimensiones.
           </p>
         </div>
 

@@ -9,4 +9,4 @@ export const SCHEMA_VERSION = "nl-0.1.0" as const;
 
 /** App-level identity, used in health check and footer. */
 export const APP_NAME = "Narrative Lab" as const;
-export const APP_PHASE = "Phase 0 — Foundation" as const;
+export const APP_PHASE = "Fase 7 — Materiales de sesión" as const;
