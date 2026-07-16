@@ -56,7 +56,7 @@ export async function POST(request: Request) {
     }
 
     // --- Create Contributor ---
-    const contributor = createContributor(corpusId, contributorName, senderType);
+    const contributor = await createContributor(corpusId, contributorName, senderType);
 
     // --- Process Pieces & Score them ---
     const results = [];
@@ -99,7 +99,7 @@ export async function POST(request: Request) {
         }, { status: 502 });
       }
 
-      const savedPiece = createPiece(
+      const savedPiece = await createPiece(
         corpusId,
         contributor.id,
         p.title,
@@ -108,7 +108,7 @@ export async function POST(request: Request) {
         p.format as "article" | "audiovisual" | "social"
       );
 
-      const savedAnalysis = createAnalysis(
+      const savedAnalysis = await createAnalysis(
         savedPiece.id,
         scoringResult!.enactmentScore,
         scoringResult!.dimensions.D1.score,
@@ -127,10 +127,12 @@ export async function POST(request: Request) {
       let classifications = null;
       try {
         classifications = await runClassification(p.text);
-        createParadigmClassification(savedPiece.id, "paradigm1", classifications.paradigm1.level, classifications.paradigm1.justification, MODEL_VERSION);
-        createParadigmClassification(savedPiece.id, "paradigm2", classifications.paradigm2.level, classifications.paradigm2.justification, MODEL_VERSION);
-        createParadigmClassification(savedPiece.id, "paradigm3", classifications.paradigm3.level, classifications.paradigm3.justification, MODEL_VERSION);
-        createParadigmClassification(savedPiece.id, "paradigm4", classifications.paradigm4.level, classifications.paradigm4.justification, MODEL_VERSION);
+        await Promise.all([
+          createParadigmClassification(savedPiece.id, "paradigm1", classifications.paradigm1.level, classifications.paradigm1.justification, MODEL_VERSION),
+          createParadigmClassification(savedPiece.id, "paradigm2", classifications.paradigm2.level, classifications.paradigm2.justification, MODEL_VERSION),
+          createParadigmClassification(savedPiece.id, "paradigm3", classifications.paradigm3.level, classifications.paradigm3.justification, MODEL_VERSION),
+          createParadigmClassification(savedPiece.id, "paradigm4", classifications.paradigm4.level, classifications.paradigm4.justification, MODEL_VERSION),
+        ]);
       } catch (err: any) {
         console.error(`[api/intake] Hello World classification failed for piece "${p.title}":`, err);
       }

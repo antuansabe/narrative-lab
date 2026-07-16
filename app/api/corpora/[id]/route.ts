@@ -8,7 +8,7 @@ export async function GET(
 ) {
   try {
     const { id: corpusId } = await params;
-    const db = readDb();
+    const db = await readDb();
 
     // Find corpus
     const corpus = db.corpora.find((c) => c.id === corpusId);
