@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { EcosystemRadar } from "@/components/EcosystemRadar";
 import { SegmentationRadar } from "@/components/SegmentationRadar";
 
@@ -121,7 +122,9 @@ const PARADIGM_LABELS = {
   },
 };
 
-export default function EcosystemPage() {
+function EcosystemPageInner() {
+  const searchParams = useSearchParams();
+  const requestedCorpusId = searchParams.get("corpus");
   const [corpora, setCorpora] = useState<Corpus[]>([]);
   const [selectedCorpusId, setSelectedCorpusId] = useState<string>("");
   const [data, setData] = useState<EcosystemData | null>(null);
@@ -129,6 +132,51 @@ export default function EcosystemPage() {
   const [facilitatorMode, setFacilitatorMode] = useState<boolean>(false);
   const [expandedPieceId, setExpandedPieceId] = useState<string | null>(null);
   const [segmentCategory, setSegmentCategory] = useState<"senderType" | "format">("senderType");
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState<boolean>(false);
+
+  async function handleDownloadPdf() {
+    const reportEl = document.getElementById("report-content");
+    if (!reportEl || !data) return;
+    setIsGeneratingPdf(true);
+    try {
+      const [{ default: html2canvas }, { default: jsPDF }] = await Promise.all([
+        import("html2canvas"),
+        import("jspdf"),
+      ]);
+      const canvas = await html2canvas(reportEl, {
+        scale: 2,
+        backgroundColor: "#FAF7F1",
+        useCORS: true,
+      });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = pageWidth - 48; // 24pt margin each side
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      let heightLeft = imgHeight;
+      let position = 24;
+      pdf.addImage(imgData, "PNG", 24, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight - 48;
+
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight + 24;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 24, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight - 48;
+      }
+
+      const safeName = data.corpus.name.replace(/[^a-z0-9]+/gi, "-").toLowerCase();
+      const dateStr = new Date().toISOString().slice(0, 10);
+      pdf.save(`narrative-lab-${safeName}-${dateStr}.pdf`);
+    } catch (err) {
+      console.error("Error generating PDF:", err);
+      alert("No se pudo generar el PDF. Intenta de nuevo.");
+    } finally {
+      setIsGeneratingPdf(false);
+    }
+  }
 
   const getSenderTypeSeries = () => {
     if (!data?.stats?.segmentation?.senderType) return [];
@@ -198,7 +246,9 @@ export default function EcosystemPage() {
         const json = await res.json();
         if (res.ok && json.corpora) {
           setCorpora(json.corpora);
-          if (json.corpora.length > 0) {
+          if (requestedCorpusId && json.corpora.some((c: Corpus) => c.id === requestedCorpusId)) {
+            setSelectedCorpusId(requestedCorpusId);
+          } else if (json.corpora.length > 0) {
             setSelectedCorpusId(json.corpora[0].id);
           } else {
             setLoading(false);
@@ -244,7 +294,7 @@ export default function EcosystemPage() {
             Narrative Lab
           </Link>
           <span className="font-mono text-xs text-ink/50">
-            fase 5 — vista del ecosistema
+            Vista del Ecosistema
           </span>
         </div>
       </header>
@@ -274,11 +324,12 @@ export default function EcosystemPage() {
           </div>
           <div className="flex items-center gap-4">
             <button
-              onClick={() => window.print()}
-              className="px-3 py-1.5 bg-white border border-zinc-300 hover:bg-zinc-50 text-zinc-700 text-xs font-mono font-medium rounded shadow-sm flex items-center gap-1.5"
-              title="Guardar como PDF o Imprimir reporte"
+              onClick={handleDownloadPdf}
+              disabled={isGeneratingPdf}
+              className="px-3 py-1.5 bg-white border border-zinc-300 hover:bg-zinc-50 text-zinc-700 text-xs font-mono font-medium rounded shadow-sm flex items-center gap-1.5 disabled:opacity-50 disabled:cursor-wait"
+              title="Descargar este reporte como archivo PDF"
             >
-              <span>🖨️</span> Imprimir Reporte
+              <span>⬇️</span> {isGeneratingPdf ? "Generando PDF…" : "Descargar Reporte (PDF)"}
             </button>
             <label className="flex items-center gap-2 text-xs font-mono text-zinc-600 cursor-pointer select-none">
               <input
@@ -305,9 +356,9 @@ export default function EcosystemPage() {
         )}
 
         {!loading && data && (
-          <div className="space-y-8">
-            {/* Encabezado de reporte — solo visible al imprimir, para que el PDF se identifique a sí mismo */}
-            <div className="hidden print:block mb-6">
+          <div className="space-y-8" id="report-content">
+            {/* Encabezado de reporte — siempre visible, identifica el corpus y la fecha tanto en pantalla como en el PDF */}
+            <div className="mb-6">
               <h1 className="font-display text-2xl text-ink">Narrative Lab — Reporte de Ecosistema</h1>
               <p className="text-sm text-zinc-600 mt-1">
                 Corpus: <strong>{data.corpus.name}</strong> · Generado el{" "}
@@ -673,5 +724,13 @@ export default function EcosystemPage() {
         )}
       </div>
     </main>
+  );
+}
+
+export default function EcosystemPage() {
+  return (
+    <Suspense fallback={<main className="min-h-screen bg-paper" />}>
+      <EcosystemPageInner />
+    </Suspense>
   );
 }

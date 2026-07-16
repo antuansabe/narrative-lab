@@ -193,14 +193,10 @@ export default function IntakePage() {
             Narrative Lab
           </Link>
           <span className="font-mono text-xs text-ink/50">
-            fase 3 — corpus intake
+            Ingreso de Corpus
           </span>
         </div>
       </header>
-
-      <div className="bg-amber-50 border-b border-amber-200 text-amber-800 py-2.5 px-6 text-center text-xs font-mono">
-        ⚠️ Esta versión local todavía no tiene base de datos — nada de lo que se ingrese aquí se guarda de forma permanente.
-      </div>
 
       <section className="mx-auto max-w-4xl px-6 pt-12">
         <div className="mb-10">
@@ -294,6 +290,17 @@ export default function IntakePage() {
                   </div>
                 </div>
               ))}
+            </div>
+            <div className="mt-6 pt-5 border-t border-line/60 flex items-center justify-between">
+              <p className="text-xs text-ink/60">
+                Este corpus ya tiene material analizado — puedes verlo en el ecosistema.
+              </p>
+              <Link
+                href={`/ecosystem?corpus=${selectedCorpusId}`}
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:opacity-80 transition"
+              >
+                Ver este corpus en el Ecosistema →
+              </Link>
             </div>
           </div>
         )}

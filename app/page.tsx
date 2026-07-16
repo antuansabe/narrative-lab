@@ -1,26 +1,23 @@
 import Link from "next/link";
-import { APP_PHASE, MODEL_VERSION, SCHEMA_VERSION } from "@/lib/version";
+import { MODEL_VERSION, SCHEMA_VERSION } from "@/lib/version";
 
 const MODULES = [
   {
     id: "corpus",
     title: "Ingreso de corpus",
     desc: "Captura en lote de piezas narrativas — artículos, guiones, transcripciones — con metadatos de tipo de emisor y formato.",
-    phase: "Fase 3",
     href: "/intake",
   },
   {
     id: "paradigms",
     title: "Paradigmas Hello World",
     desc: "Clasificación Ausente / Presente / Central en los cuatro paradigmas de Hello World, con una justificación breve y fundamentada por pieza.",
-    phase: "Fase 4",
     href: "/ecosystem",
   },
   {
     id: "ecosystem",
     title: "Vista de ecosistema",
     desc: "Un radar para todo el corpus: superposición de mapa de calor, estadísticas de presencia, segmentación, y coherencia intra-autor.",
-    phase: "Fases 5–6",
     href: "/ecosystem",
   },
 ] as const;
@@ -34,7 +31,7 @@ export default function Home() {
             Narrative Lab
           </span>
           <span className="font-mono text-xs text-ink/50">
-            {APP_PHASE.toLowerCase()}
+            Ashoka · Hello World
           </span>
         </div>
       </header>
@@ -59,9 +56,6 @@ export default function Home() {
           {MODULES.map((m) => {
             const ArticleContent = (
               <>
-                <p className="font-mono text-[11px] uppercase tracking-widest text-primary mb-3">
-                  {m.phase}
-                </p>
                 <h2 className="font-display text-lg text-ink mb-2">{m.title}</h2>
                 <p className="text-sm text-ink/65 leading-relaxed mb-4">{m.desc}</p>
                 <span className="text-xs font-mono text-accent group-hover:text-primary transition underline">
