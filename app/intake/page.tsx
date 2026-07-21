@@ -23,6 +23,7 @@ const GENRE_TAG_LABELS = {
   "institutional-report": "Reporte institucional (institutional-report)",
   "speech-public-address": "Discurso / Presentación (speech-public-address)",
   "fundraising-copy": "Texto de recaudación (fundraising-copy)",
+  "journalistic-article": "Artículo periodístico (journalistic-article)",
 };
 
 export default function IntakePage() {

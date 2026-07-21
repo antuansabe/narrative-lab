@@ -14,7 +14,8 @@ export type GenreTag =
   | "social-media-post"
   | "institutional-report"
   | "speech-public-address"
-  | "fundraising-copy";
+  | "fundraising-copy"
+  | "journalistic-article";
 
 /** Paradigm name by Enactment Score band (docs/SCORING_MODEL.md). */
 export type ParadigmName =

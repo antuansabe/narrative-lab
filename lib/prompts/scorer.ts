@@ -91,6 +91,7 @@ Before scoring, assign exactly ONE genre tag from this set:
 - "institutional-report" — third-person organizational voice, results-oriented.
 - "speech-public-address" — performed for an audience, rhetorical.
 - "fundraising-copy" — pitch to donors, emotionally framed asks.
+- "journalistic-article" — third-person news reporting/coverage by a journalist or outlet, structured around a story/event rather than an institution's own voice.
 
 Apply genre-adjusted weights to compute the Enactment Score:
 
@@ -102,6 +103,7 @@ structured-profile   → D1·0.25 D2·0.25 D3·0.20 D4·0.20 D5·0.10
 social-media-post    → D1·0.30 D2·0.20 D3·0.30 D4·0.10 D5·0.10
 speech-public-address → D1·0.25 D2·0.25 D3·0.20 D4·0.20 D5·0.10
 fundraising-copy     → D1·0.20 D2·0.30 D3·0.25 D4·0.15 D5·0.10
+journalistic-article  → D1·0.20 D2·0.30 D3·0.20 D4·0.20 D5·0.10
 
 Enactment Score = (D1·w1 + D2·w2 + D3·w3 + D4·w4 + D5·w5) × 25
 
@@ -152,7 +154,7 @@ Quote limit: provide AT MOST 2 verbatim quotes per dimension — the most repres
 Return ONLY a single JSON object. No prose, no markdown fences, no commentary before or after. The JSON must validate against this schema:
 
 {
-  "genreTag": "free-form-interview" | "structured-profile" | "social-media-post" | "institutional-report" | "speech-public-address" | "fundraising-copy",
+  "genreTag": "free-form-interview" | "structured-profile" | "social-media-post" | "institutional-report" | "speech-public-address" | "fundraising-copy" | "journalistic-article",
   "wordCount": <integer>,
   "dimensions": {
     "D1": { "score": 0..4, "justification": "<1-3 sentences>", "quotes": ["<verbatim quote>", ...] },

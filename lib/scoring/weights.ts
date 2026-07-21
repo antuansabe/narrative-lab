@@ -26,6 +26,14 @@ export const DEFAULT_GENRE_WEIGHTS: Record<GenreTag, WeightVector> = {
   "institutional-report": [0.2, 0.3, 0.2, 0.2, 0.1],
   "speech-public-address": [0.25, 0.25, 0.2, 0.2, 0.1],
   "fundraising-copy": [0.2, 0.3, 0.25, 0.15, 0.1],
+  // PROVISIONAL — added 2026-07-16 for Hello World journalistic coverage,
+  // cloned from institutional-report (closest analogue: third-person,
+  // results/fact-oriented) as a working default. NOT validated by Giselle.
+  // D1 (who has agency) and D2 (systemic vs. individual framing) are the
+  // two dimensions most diagnostic of how journalism frames migration —
+  // she may want to weight them differently than a generic institutional
+  // report. Do not treat this vector as final; see message to Giselle.
+  "journalistic-article": [0.2, 0.3, 0.2, 0.2, 0.1],
 };
 
 export const WEIGHT_PROFILES: Record<SubjectType, Record<GenreTag, WeightVector>> = {

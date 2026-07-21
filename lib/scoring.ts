@@ -29,6 +29,7 @@ const VALID_GENRE_TAGS: GenreTag[] = [
   "institutional-report",
   "speech-public-address",
   "fundraising-copy",
+  "journalistic-article",
 ];
 
 // ---------------------------------------------------------------------------
