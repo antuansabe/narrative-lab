@@ -151,9 +151,29 @@ export async function createContributor(
   const { data: corpus, error: cErr } = await sb.from("corpora").select("id").eq("id", corpusId).maybeSingle();
   if (cErr) throw new Error(`[db] createContributor lookup failed: ${cErr.message}`);
   if (!corpus) throw new Error(`Corpus with ID ${corpusId} not found.`);
+
+  const trimmedName = name.trim();
+
+  // Reuse an existing contributor if the same name already exists in this
+  // corpus (case-insensitive, whitespace-trimmed exact match). This is what
+  // lets a journalist's pieces accumulate across multiple intake batches
+  // ("lotes") into one aggregate identity instead of each batch creating a
+  // fresh, disconnected contributor row. Deliberately scoped to ONE corpus
+  // (not merged across corpora) and deliberately exact-match (not fuzzy) —
+  // safer to under-merge (miss "J.P. Schneider" vs "Juan Pablo Schneider")
+  // than to over-merge (wrongly combine two different people who share a name).
+  const { data: existing, error: findErr } = await sb
+    .from("contributors")
+    .select("*")
+    .eq("corpus_id", corpusId)
+    .ilike("name", trimmedName)
+    .maybeSingle();
+  if (findErr) throw new Error(`[db] createContributor existing-name lookup failed: ${findErr.message}`);
+  if (existing) return mapContributor(existing);
+
   const { data, error } = await sb
     .from("contributors")
-    .insert({ corpus_id: corpusId, name: name.trim(), sender_type: senderType } as any)
+    .insert({ corpus_id: corpusId, name: trimmedName, sender_type: senderType } as any)
     .select()
     .single();
   if (error) throw new Error(`[db] createContributor insert failed: ${error.message}`);
