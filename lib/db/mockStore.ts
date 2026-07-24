@@ -284,3 +284,30 @@ export async function createParadigmClassification(
   if (error) throw new Error(`[db] createParadigmClassification upsert failed: ${error.message}`);
   return mapPC(data);
 }
+
+// --- Deletion API ---
+// Both corpora and pieces cascade at the DB level (on delete cascade on
+// contributors/pieces/analyses/paradigm_classifications' FKs) — deleting
+// the parent row is enough; Postgres removes the rest.
+
+export async function deletePiece(pieceId: string): Promise<{ deleted: boolean; title: string | null }> {
+  const sb = getSupabase();
+  const { data: piece, error: findErr } = await sb.from("pieces").select("id, title").eq("id", pieceId).maybeSingle();
+  if (findErr) throw new Error(`[db] deletePiece lookup failed: ${findErr.message}`);
+  if (!piece) return { deleted: false, title: null };
+
+  const { error } = await sb.from("pieces").delete().eq("id", pieceId);
+  if (error) throw new Error(`[db] deletePiece failed: ${error.message}`);
+  return { deleted: true, title: (piece as any).title as string };
+}
+
+export async function deleteCorpus(corpusId: string): Promise<{ deleted: boolean; name: string | null }> {
+  const sb = getSupabase();
+  const { data: corpus, error: findErr } = await sb.from("corpora").select("id, name").eq("id", corpusId).maybeSingle();
+  if (findErr) throw new Error(`[db] deleteCorpus lookup failed: ${findErr.message}`);
+  if (!corpus) return { deleted: false, name: null };
+
+  const { error } = await sb.from("corpora").delete().eq("id", corpusId);
+  if (error) throw new Error(`[db] deleteCorpus failed: ${error.message}`);
+  return { deleted: true, name: (corpus as any).name as string };
+}

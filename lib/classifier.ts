@@ -25,7 +25,7 @@ export async function runClassification(pieceText: string): Promise<ClassifierOu
     model: "claude-sonnet-4-6",
     systemPrompt: CLASSIFIER_SYSTEM_PROMPT,
     userMessage: pieceText,
-    maxTokens: 2000,
+    maxTokens: 3000,
     temperature: 0,
   });
 

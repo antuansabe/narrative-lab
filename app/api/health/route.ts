@@ -13,8 +13,8 @@ export async function GET() {
     schemaVersion: SCHEMA_VERSION,
     env: {
       anthropicKey: Boolean(process.env.ANTHROPIC_API_KEY),
-      supabaseUrl: Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL),
-      supabaseAnonKey: Boolean(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY),
+      supabaseUrl: Boolean(process.env.SUPABASE_URL),
+      supabaseSecretKey: Boolean(process.env.SUPABASE_SECRET_KEY),
     },
     timestamp: new Date().toISOString(),
   });

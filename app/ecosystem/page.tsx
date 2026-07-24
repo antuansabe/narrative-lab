@@ -280,32 +280,81 @@ function EcosystemPageInner() {
   }, []);
 
   // Fetch ecosystem statistics when selectedCorpusId changes
+  async function fetchEcosystemData(corpusId: string) {
+    try {
+      setLoading(true);
+      const res = await fetch(`/api/corpora/${corpusId}`);
+      const json = await res.json();
+      if (res.ok) {
+        setData(json);
+      } else {
+        console.error("Error fetching ecosystem statistics:", json.error);
+      }
+    } catch (err) {
+      console.error("Error fetching ecosystem details:", err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
     if (!selectedCorpusId) return;
     // A new corpus selection invalidates any previously generated summary.
     setCorpusSummary(null);
     setSummaryStatus("idle");
     setSummaryError("");
-
-    async function fetchEcosystemData() {
-      try {
-        setLoading(true);
-        const res = await fetch(`/api/corpora/${selectedCorpusId}`);
-        const json = await res.json();
-        if (res.ok) {
-          setData(json);
-        } else {
-          console.error("Error fetching ecosystem statistics:", json.error);
-        }
-      } catch (err) {
-        console.error("Error fetching ecosystem details:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchEcosystemData();
+    fetchEcosystemData(selectedCorpusId);
   }, [selectedCorpusId]);
+
+  const [confirmDeletePieceId, setConfirmDeletePieceId] = useState<string | null>(null);
+  const [confirmDeleteCorpus, setConfirmDeleteCorpus] = useState<boolean>(false);
+  const [deleteBusy, setDeleteBusy] = useState<boolean>(false);
+
+  async function handleDeletePiece(pieceId: string) {
+    setDeleteBusy(true);
+    try {
+      const res = await fetch(`/api/pieces/${pieceId}`, { method: "DELETE" });
+      const json = await res.json();
+      if (!res.ok) {
+        alert(json.error || "No se pudo eliminar la pieza.");
+        return;
+      }
+      setConfirmDeletePieceId(null);
+      setExpandedPieceId(null);
+      setExpandedAuthorPieceId(null);
+      await fetchEcosystemData(selectedCorpusId);
+    } catch (err) {
+      console.error("Error deleting piece:", err);
+      alert("No se pudo conectar con el servidor.");
+    } finally {
+      setDeleteBusy(false);
+    }
+  }
+
+  async function handleDeleteCorpus() {
+    setDeleteBusy(true);
+    try {
+      const res = await fetch(`/api/corpora/${selectedCorpusId}`, { method: "DELETE" });
+      const json = await res.json();
+      if (!res.ok) {
+        alert(json.error || "No se pudo eliminar el corpus.");
+        return;
+      }
+      setConfirmDeleteCorpus(false);
+      // Refresh the corpus list and select whatever remains, if anything.
+      const listRes = await fetch("/api/corpora");
+      const listJson = await listRes.json();
+      setCorpora(listJson.corpora || []);
+      setData(null);
+      setSelectedCorpusId(listJson.corpora?.[0]?.id || "");
+      if (!listJson.corpora || listJson.corpora.length === 0) setLoading(false);
+    } catch (err) {
+      console.error("Error deleting corpus:", err);
+      alert("No se pudo conectar con el servidor.");
+    } finally {
+      setDeleteBusy(false);
+    }
+  }
 
   return (
     <main className="min-h-screen bg-paper pb-24 text-ink">
@@ -361,6 +410,34 @@ function EcosystemPageInner() {
               />
               Modo Facilitador
             </label>
+            {selectedCorpusId && (
+              confirmDeleteCorpus ? (
+                <div className="flex items-center gap-1.5 text-xs">
+                  <span className="text-red-700 font-medium">¿Eliminar este corpus y todas sus piezas?</span>
+                  <button
+                    onClick={handleDeleteCorpus}
+                    disabled={deleteBusy}
+                    className="px-2 py-1 bg-red-600 text-white rounded font-mono disabled:opacity-50"
+                  >
+                    {deleteBusy ? "…" : "Sí, eliminar"}
+                  </button>
+                  <button
+                    onClick={() => setConfirmDeleteCorpus(false)}
+                    className="px-2 py-1 bg-zinc-200 text-zinc-700 rounded font-mono"
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setConfirmDeleteCorpus(true)}
+                  className="px-2 py-1.5 text-red-600 hover:bg-red-50 text-xs font-mono rounded"
+                  title="Eliminar este corpus y todas sus piezas"
+                >
+                  🗑️ Eliminar corpus
+                </button>
+              )
+            )}
           </div>
         </div>
 
@@ -773,6 +850,34 @@ function EcosystemPageInner() {
                                       <span className="text-xs font-semibold text-primary">
                                         {analysis?.enactmentScore ?? 0}
                                       </span>
+                                      {confirmDeletePieceId === piece.id ? (
+                                        <span className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                                          <button
+                                            onClick={() => handleDeletePiece(piece.id)}
+                                            disabled={deleteBusy}
+                                            className="px-1.5 py-0.5 bg-red-600 text-white rounded text-[10px] font-mono disabled:opacity-50"
+                                          >
+                                            {deleteBusy ? "…" : "Sí"}
+                                          </button>
+                                          <button
+                                            onClick={() => setConfirmDeletePieceId(null)}
+                                            className="px-1.5 py-0.5 bg-zinc-200 text-zinc-700 rounded text-[10px] font-mono"
+                                          >
+                                            No
+                                          </button>
+                                        </span>
+                                      ) : (
+                                        <button
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            setConfirmDeletePieceId(piece.id);
+                                          }}
+                                          title="Eliminar esta pieza"
+                                          className="text-zinc-300 hover:text-red-500 text-[10px]"
+                                        >
+                                          🗑️
+                                        </button>
+                                      )}
                                       <span className="text-zinc-300 text-[10px]">{isPieceExpanded ? "▲" : "▼"}</span>
                                     </div>
                                   </div>
@@ -838,6 +943,34 @@ function EcosystemPageInner() {
                             <span className="text-sm font-semibold text-primary">
                               Score: {analysis?.enactmentScore || 0}
                             </span>
+                            {confirmDeletePieceId === piece.id ? (
+                              <span className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                                <button
+                                  onClick={() => handleDeletePiece(piece.id)}
+                                  disabled={deleteBusy}
+                                  className="px-1.5 py-0.5 bg-red-600 text-white rounded text-[10px] font-mono disabled:opacity-50"
+                                >
+                                  {deleteBusy ? "…" : "Sí"}
+                                </button>
+                                <button
+                                  onClick={() => setConfirmDeletePieceId(null)}
+                                  className="px-1.5 py-0.5 bg-zinc-200 text-zinc-700 rounded text-[10px] font-mono"
+                                >
+                                  No
+                                </button>
+                              </span>
+                            ) : (
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setConfirmDeletePieceId(piece.id);
+                                }}
+                                title="Eliminar esta pieza"
+                                className="text-zinc-300 hover:text-red-500 text-xs"
+                              >
+                                🗑️
+                              </button>
+                            )}
                             <span className="text-zinc-300 text-xs">
                               {isExpanded ? "▲" : "▼"}
                             </span>

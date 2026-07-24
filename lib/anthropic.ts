@@ -18,6 +18,10 @@ export type ClaudeCallOptions = {
 
 export type ClaudeCallResult = {
   text: string;
+  /** Anthropic's stop_reason — "max_tokens" means the response was cut off
+   * mid-generation, which callers should treat as a distinct, diagnosable
+   * failure mode (raise maxTokens) rather than a generic malformed-output bug. */
+  stopReason: string | null;
   usage: {
     inputTokens: number;
     outputTokens: number;
@@ -76,6 +80,7 @@ export async function callClaudeWithCachedSystem(
 
       return {
         text: stripCodeFences(first.text),
+        stopReason: response.stop_reason,
         usage: {
           inputTokens: response.usage.input_tokens,
           outputTokens: response.usage.output_tokens,

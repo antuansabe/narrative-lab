@@ -1,6 +1,23 @@
 import { NextResponse } from "next/server";
-import { readDb } from "@/lib/db/mockStore";
+import { readDb, deleteCorpus } from "@/lib/db/mockStore";
 import { MODEL_VERSION, SCHEMA_VERSION } from "@/lib/version";
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id: corpusId } = await params;
+    const result = await deleteCorpus(corpusId);
+    if (!result.deleted) {
+      return NextResponse.json({ error: `No se encontró el corpus con ID ${corpusId}.` }, { status: 404 });
+    }
+    return NextResponse.json({ deleted: true, name: result.name }, { status: 200 });
+  } catch (err: any) {
+    console.error("[api/corpora/[id]] DELETE error:", err);
+    return NextResponse.json({ error: err.message || "No se pudo eliminar el corpus." }, { status: 500 });
+  }
+}
 
 export async function GET(
   request: Request,

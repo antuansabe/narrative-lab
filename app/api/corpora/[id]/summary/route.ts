@@ -94,9 +94,16 @@ ${pieceBlocks.join("\n")}`;
       model: MODEL_VERSION,
       systemPrompt: CORPUS_SUMMARY_SYSTEM_PROMPT,
       userMessage,
-      maxTokens: 2000,
+      maxTokens: 4000,
       temperature: 0,
     });
+
+    if (response.stopReason === "max_tokens") {
+      console.error("[api/corpora/[id]/summary] Truncated at max_tokens for corpus", corpusId);
+      return NextResponse.json({
+        error: "El resumen se cortó por exceder el límite de longitud — el corpus tiene mucho contenido para resumir de una vez. Intenta de nuevo; si persiste, avísale a Antonio.",
+      }, { status: 502 });
+    }
 
     let parsed: unknown;
     try {

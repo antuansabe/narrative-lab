@@ -73,10 +73,14 @@ export async function POST(request: Request) {
           model: "claude-sonnet-4-6",
           systemPrompt: SCORER_SYSTEM_PROMPT,
           userMessage: p.text,
-          maxTokens: 4000,
+          maxTokens: 8000,
           temperature: 0,
         });
         rawJson = response.text;
+        if (response.stopReason === "max_tokens") {
+          errorOccurred = true;
+          errorMessage = `La respuesta del modelo se cortó por exceder el límite de longitud (posiblemente por un texto muy extenso o complejo). Intenta con un fragmento más corto, o repórtalo si el texto es de tamaño normal.`;
+        }
       } catch (err: any) {
         console.error(`[api/intake] Error scoring piece "${p.title}":`, err);
         errorOccurred = true;
