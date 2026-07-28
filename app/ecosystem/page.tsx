@@ -543,7 +543,26 @@ function EcosystemPageInner() {
             </div>
 
             {/* Tarjetas de Resumen */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+              {/* Score agregado del ecosistema (media simple de las piezas
+                  analizadas — misma base que las medias por dimensión del
+                  radar). Solicitado por Giselle 2026-07-27. */}
+              <div className="bg-primary/5 border border-primary/30 rounded-xl p-4 col-span-2 sm:col-span-1">
+                <span className="block text-xs font-mono uppercase tracking-wider text-primary/70">Score Ecosistema</span>
+                <span className="text-3xl font-display text-primary">
+                  {data.analyses.length > 0
+                    ? Math.round(data.analyses.reduce((s, a) => s + a.enactmentScore, 0) / data.analyses.length)
+                    : "—"}
+                </span>
+                <span className="block text-[10px] text-zinc-400 mt-0.5">promedio de {data.analyses.length} pieza(s)</span>
+                <div className="flex flex-wrap gap-x-2 gap-y-0.5 mt-1.5 text-[10px] font-mono text-zinc-500">
+                  {(["D1", "D2", "D3", "D4", "D5"] as const).map((k) => (
+                    <span key={k}>
+                      {k}: <span className="font-semibold text-zinc-700">{data.stats.dimensions[k].mean.toFixed(1)}</span>
+                    </span>
+                  ))}
+                </div>
+              </div>
               <div className="bg-white border border-zinc-200 rounded-xl p-4">
                 <span className="block text-xs font-mono uppercase tracking-wider text-zinc-400">Piezas</span>
                 <span className="text-3xl font-display text-zinc-800">{data.piecesCount}</span>

@@ -82,6 +82,12 @@ Core principle: identity is enacted, not claimed. The architecture of the langua
 - 3: Narrator negotiates own identity in relation to work. Positionality, learning, power named.
 - 4: Identity enacted, not claimed. Polyphony genuine. Tensions held without resolution.
 
+GENRE ADJUSTMENT — journalistic-article ONLY: Professional journalistic norms exclude first-person self-reference; do NOT penalize the absence of "I/we" or of explicit narrator reflexivity in this genre. Instead, evaluate D5 through the journalist's EDITORIAL enactment of the paradigm:
+- (a) Framing choices: are the story's subjects positioned as agents of change rather than passive victims or beneficiaries?
+- (b) Voice architecture: whose voices are quoted with genuine epistemic weight, and does the piece let affected people define the problem and the solution?
+- (c) Structural stance: does the construction of the story itself (what is foregrounded, what causal frames are chosen, which tensions are held open) demonstrate the changemaker paradigm?
+Under this adjustment: a piece whose editorial construction consistently enacts the paradigm can reach 3–4 with no first-person presence at all; 2 = editorial stance visible but conventional (agency framing present yet narrator's frame dominates); reserve 0–1 for pieces whose framing shows no editorial stance toward agency (pure event chronicle, deficit framing, institutional stenography). All other rubric principles (conservative scoring, quote-backed justification) still apply.
+
 # Genre tag
 
 Before scoring, assign exactly ONE genre tag from this set:
@@ -103,7 +109,7 @@ structured-profile   → D1·0.25 D2·0.25 D3·0.20 D4·0.20 D5·0.10
 social-media-post    → D1·0.30 D2·0.20 D3·0.30 D4·0.10 D5·0.10
 speech-public-address → D1·0.25 D2·0.25 D3·0.20 D4·0.20 D5·0.10
 fundraising-copy     → D1·0.20 D2·0.30 D3·0.25 D4·0.15 D5·0.10
-journalistic-article  → D1·0.20 D2·0.30 D3·0.20 D4·0.20 D5·0.10
+journalistic-article  → D1·0.25 D2·0.25 D3·0.25 D4·0.20 D5·0.05
 
 Enactment Score = (D1·w1 + D2·w2 + D3·w3 + D4·w4 + D5·w5) × 25
 
