@@ -172,3 +172,44 @@ health → intake → classify → ecosystem view.
 - **July 22:** session.
 
 The critical path is G1/G2/G4 answers from Giselle — request them THIS WEEK.
+
+
+---
+
+## 5. Session log — 2026-07-27 (night, pre-presentation sprint)
+
+**Context:** Journalists convened for the morning of 07-28; presentation 07-29.
+Giselle reviewed live via Teams and validated methodology decisions in-chat.
+
+**Decisions closed (Giselle, methodology authority):**
+- G-weights (journalistic-article): **[0.25, 0.25, 0.25, 0.20, 0.05]** — she
+  wrote the vector "25 / 25 / 25 / 20 / 5" verbatim. Replaces the provisional
+  clone of institutional-report from 07-16.
+- D5 rubric direction for journalistic-article: evaluate editorial stance
+  (framing, voice architecture, structural stance), no first-person penalty.
+  Direction approved; **wording validated on a 3-piece dry-run sample sent to
+  her — full corpus re-run pending her OK on the sample.**
+- Ecosystem aggregate score definition: simple mean over analyzed pieces
+  (matches her manual calculation: 52/100 confirmed against DB).
+
+**Shipped (commits):**
+- `f71d485` — per-dimension means per contributor (completed a half-finished
+  uncommitted agent edit found in the working tree; flagged to Antonio).
+- `655b981` — validated weights; prompt table synced; D5 editorial-stance
+  genre adjustment; ecosystem aggregate score card + per-dimension means;
+  `scripts/recompute-scores.ts` (dry-run/apply); `scripts/rescore-journalistic.ts`
+  (dry-run/apply, --limit/--all).
+
+**Data operations (Supabase prod):**
+- Recompute applied: 25/41 analyses updated. Journalistic rows reflect the new
+  weights; non-journalistic deltas (±1–4 pts) were **normalization of LLM
+  arithmetic drift** — early intakes stored the model's own composite; the
+  canonical server formula now holds for every row. No raw d1–d5 touched.
+
+**Open / next:**
+- [ ] Giselle OKs the 3-piece D5 sample → run
+      `npx tsx scripts/rescore-journalistic.ts --all --apply` (28 pieces,
+      ~20s each, re-runs ALL dimensions — expect movement beyond D5).
+- [ ] Aggregation definition beyond simple mean (piece- vs contributor-
+      weighted) remains hers if she ever wants the official number changed.
+- [ ] G2 heat-map statistic and G3 coherence thresholds still pending.
