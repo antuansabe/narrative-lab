@@ -803,10 +803,21 @@ function EcosystemPageInner() {
                     const meanScore = scores.length > 0
                       ? Math.round(scores.reduce((sum, s) => sum + s, 0) / scores.length)
                       : 0;
-                    return { contributor, authorPieces, meanScore };
+                    // Per-dimension means across this contributor's pieces
+                    // (requested by Giselle 2026-07-27: "en ningún lado puedo
+                    // ver el score por dimensión de los periodistas").
+                    const authorAnalyses = authorPieces
+                      .map((p) => data.analyses.find((a) => a.pieceId === p.id))
+                      .filter((a): a is Analysis => Boolean(a));
+                    const dimMeans = (["d1", "d2", "d3", "d4", "d5"] as const).map((k) => {
+                      if (authorAnalyses.length === 0) return 0;
+                      const sum = authorAnalyses.reduce((acc, a) => acc + a[k], 0);
+                      return Math.round((sum / authorAnalyses.length) * 10) / 10;
+                    });
+                    return { contributor, authorPieces, meanScore, dimMeans };
                   })
                   .sort((a, b) => b.meanScore - a.meanScore)
-                  .map(({ contributor, authorPieces, meanScore }) => {
+                  .map(({ contributor, authorPieces, meanScore, dimMeans }) => {
                     const isAuthorExpanded = expandedAuthorId === contributor.id;
                     return (
                       <div key={contributor.id} className="transition hover:bg-zinc-50/50">
@@ -822,6 +833,13 @@ function EcosystemPageInner() {
                               {contributor.senderType === "journalist" ? "Periodista" : contributor.senderType === "organization" ? "Organización" : "Otro"}
                             </span>
                             <h4 className="text-sm font-semibold text-zinc-700">{contributor.name}</h4>
+                            <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[10px] font-mono text-zinc-500">
+                              {dimMeans.map((m, i) => (
+                                <span key={i}>
+                                  D{i + 1}: <span className="font-semibold text-zinc-700">{m.toFixed(1)}</span>
+                                </span>
+                              ))}
+                            </div>
                           </div>
                           <div className="flex items-center gap-3">
                             <span className="text-xs text-zinc-400">{authorPieces.length} pieza(s)</span>
